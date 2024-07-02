@@ -15,25 +15,29 @@ import Notes from './pages/Notes/notes';
 import Essays from './pages/Essays/Essays';
 import Login from './pages/Login/Login';
 import Editor from './pages/Editor/editor';
+import Contact from './pages/Contact/Contact';
+import About from './pages/About/About';
 
 function App() {
   return (
     <div>
     <BrowserRouter>
       <Routes>
-        <Route exact path='/editor' element={<Editor/>}>
-          
+        <Route exact path='/editor'>
+          <Route exact path='' element={<Editor/>}/>
+
         </Route>
         <Route exact path='/login' element={<Login/>}></Route>
         <Route exact path='/' element={<Homepage/>}>
-          <Route exact path='' element={<Poems/>}></Route>
+          <Route exact path='/about' element={<About/>}/>
+          <Route exact path='/contact' element={<Contact/>}/>
           <Route exact path='/stories'>
             <Route exact path="" element={<Stories/>} />
             <Route exact path='/stories/:story' element={<SingleStory/>} />
           </Route>
-          <Route exact path='/essays'>
+          <Route exact path='/memoirs'>
             <Route exact path="" element={<Essays/>} />
-            <Route exact path='/essays/:essay' element={<SingleEssay/>} />
+            <Route exact path='/memoirs/:memoir' element={<SingleEssay/>} />
           </Route>
           <Route exact path='/notes'>
             <Route exact path="" element={<Notes/>} />
