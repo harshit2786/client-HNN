@@ -6,14 +6,16 @@ import StarterKit from '@tiptap/starter-kit'
 import cn from 'classnames'
 import Focus from '@tiptap/extension-focus'
 import Placeholder from '@tiptap/extension-placeholder'
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
-import italic from "../../Images/Icons/italic.svg";
-import bold from "../../Images/Icons/bold.svg";
-import code from "../../Images/Icons/code.svg";
-import list from "../../Images/Icons/list.svg";
-import strike from "../../Images/Icons/strike.svg";
-import quote from "../../Images/Icons/quote.svg";
-import numberlist from "../../Images/Icons/numberlist.svg";
+import { useCurrentEditor } from "@tiptap/react";
+import { FaBold } from "react-icons/fa";
+import { FaItalic } from "react-icons/fa";
+import { FaStrikethrough } from "react-icons/fa";
+import { TbBlockquote } from "react-icons/tb";
+import { FaListOl } from "react-icons/fa";
+import { FaListUl } from "react-icons/fa";
+import { useEffect } from 'react'
+
+
 export const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle.configure({ types: [ListItem.name] }),
@@ -22,8 +24,8 @@ export const extensions = [
     mode: 'all',
   }),
   Placeholder.configure({
-    emptyEditorClass: 'Add Description',
-    placeholder: 'Add Description'
+    emptyEditorClass: 'Write Content',
+    placeholder: 'Write Content'
   }),
   StarterKit.configure({
     bulletList: {
@@ -38,12 +40,24 @@ export const extensions = [
 ]
 export const MenuBar = ({descriptionContent,setDescriptionContent}) => {
   const { editor } = useCurrentEditor();
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    const updateDescriptionContent = () => {
+      const html = editor.getHTML();
+      setDescriptionContent(html);
+    };
+    updateDescriptionContent();
+    editor.on('update', updateDescriptionContent);
+
+    return () => {
+      editor.off('update', updateDescriptionContent);
+    };
+  }, [editor, setDescriptionContent]);
   if (!editor) {
     return null;
   }
-  const html = editor.getHTML();
-  setDescriptionContent(html);
-  console.log(descriptionContent);
   return (
     <div className="flex gap-3 p-2">
       <button
@@ -51,46 +65,39 @@ export const MenuBar = ({descriptionContent,setDescriptionContent}) => {
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={editor.isActive("bold") ? "is-active" : ""}
       >
-        <img src={bold} style={{ widhth: "15px", height: "15px" }} />
+        <FaBold/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={editor.isActive("italic") ? "is-active" : ""}
       >
-        <img src={italic} style={{ widhth: "15px", height: "15px" }} />
+        <FaItalic/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         className={editor.isActive("strike") ? "is-active" : ""}
       >
-        <img src={strike} style={{ widhth: "15px", height: "15px" }} />
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editor.can().chain().focus().toggleCode().run()}
-        className={editor.isActive("code") ? "is-active" : ""}
-      >
-        <img src={code} style={{ widhth: "15px", height: "15px" }} />
+        <FaStrikethrough/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         className={editor.isActive("blockquote") ? "is-active" : ""}
       >
-        <img src={quote} style={{ widhth: "15px", height: "15px" }} />
+        <TbBlockquote/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "is-active" : ""}
       >
-        <img src={list} style={{ widhth: "15px", height: "15px" }} />
+        <FaListUl/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={editor.isActive("orderedList") ? "is-active" : ""}
       >
-        <img src={numberlist} style={{ widhth: "15px", height: "15px" }} />
+        <FaListOl/>
       </button>
     </div>
   );

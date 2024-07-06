@@ -4,7 +4,8 @@
   .ProseMirror {
     margin-left: .5em;
     padding: .5em;
-    min-height: 80px;
+    height: 200px;
+    overflow-y: auto;
   }
   .has-focus {
     outline: none;

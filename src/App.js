@@ -17,6 +17,19 @@ import Login from './pages/Login/Login';
 import Editor from './pages/Editor/editor';
 import Contact from './pages/Contact/Contact';
 import About from './pages/About/About';
+import EditorMemoir from './pages/Editor/memoir/memoir';
+import EditorNotes from './pages/Editor/notes/notes';
+import EditorOthers from './pages/Editor/others/others';
+import EditorPoems from './pages/Editor/poems/poems';
+import EditorQuotes from './pages/Editor/quotes/quotes';
+import EditorStory from './pages/Editor/story/story';
+import PoemEdit from './pages/Editor/poems/singlePoem';
+import StoryEdit from './pages/Editor/story/singleStory';
+import MemoirEdit from './pages/Editor/memoir/singleMemoir';
+import NoteEdit from './pages/Editor/notes/singleNote';
+import QuoteEdit from './pages/Editor/quotes/singleQuote';
+import OtherEdit from './pages/Editor/others/singleOther';
+import Create from './pages/Editor/Create';
 
 function App() {
   return (
@@ -25,7 +38,30 @@ function App() {
       <Routes>
         <Route exact path='/editor'>
           <Route exact path='' element={<Editor/>}/>
-
+          <Route exact path="/editor/poems" element={<EditorPoems/>}>
+          </Route>
+          <Route exact path='/editor/poems/:name' element={<PoemEdit/>}></Route>
+          <Route exact path="/editor/stories" element={<EditorStory/>}>
+            
+          </Route>
+          <Route exact path='/editor/stories/:name' element={<StoryEdit/>}></Route>
+          <Route exact path="/editor/memoirs" element={<EditorMemoir/>}>
+            
+          </Route>
+          <Route exact path='/editor/memoirs/:name' element={<MemoirEdit/>}></Route>
+          <Route exact path="/editor/notes" element={<EditorNotes/>}>
+            
+          </Route>
+          <Route exact path='/editor/notes/:name' element={<NoteEdit/>}></Route>
+          <Route exact path="/editor/quotes" element={<EditorQuotes/>}>
+            
+          </Route>
+          <Route exact path='/editor/quotes/:name' element={<QuoteEdit/>}></Route>
+          <Route exact path="/editor/others" element={<EditorOthers/>}>
+            
+          </Route>
+          <Route exact path='/editor/others/:name' element={<OtherEdit/>}></Route>
+          <Route exact path='/editor/create-new' element={<Create/>}></Route>
         </Route>
         <Route exact path='/login' element={<Login/>}></Route>
         <Route exact path='/' element={<Homepage/>}>
