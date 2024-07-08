@@ -4,15 +4,17 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
+  Input,Image
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { EditorProvider } from "@tiptap/react";
 import { MenuBar, props, extensions } from "../../components/markdown/markdown";
 import { useNavigate } from "react-router-dom";
 import { CreateData } from "../../controllers/strapiController";
+import { useMobileLayout } from "../../hooks/mobilelayout";
 
 function Create() {
+    const isMobile = useMobileLayout();
     const navigate = useNavigate();
   const [options, setOptions] = useState(new Set([]));
   const arr = ["Poem", "Story", "Memoir", "Note", "Quote", "Other"];
@@ -22,6 +24,10 @@ function Create() {
   const [title,setTitle] = useState("");
   const generateUrl = (name) =>{
     return name.toLowerCase().replace(/\s+/g,"-");
+  }
+  const handleLogout = () => {
+    sessionStorage.removeItem('KadduData');
+    navigate('/');
   }
   const handleSubmit = async() => {
     if(Array.from(options).length ===0 || description ==="" || description === "<p></p>" || title ==="" || footer===""){
@@ -50,9 +56,18 @@ function Create() {
     }
   },[navigate])
   return (
-    <div className="h-screen flex justify-center pt-16 bg-[#fdf7f3]">
+    <div className={`${isMobile ? "min-h-screen pb-8" : " h-screen"} flex justify-center pt-16 bg-[#fdf7f3]`}>
+    <div className=" flex gap-4 absolute top-2 right-2">
+    <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+            </div>
       <div className="w-[80%] flex gap-8 flex-col items-center">
-        <div className="w-full flex items-center justify-between ">
+        <div className={` ${isMobile ? "flex-col gap-2 items-center justify-center" : "justify-between"} w-full flex items-center `}>
           <Dropdown>
             <DropdownTrigger>
               <Button className="bg-[#FAE9DD] text-[#BF7B67]" size="sm">
@@ -94,7 +109,9 @@ function Create() {
             label="Image URL"
           />
         </div>
-        <div className=" border border-[#BF7B67] h-auto rounded-lg  w-[80%]">
+        <div className={`w-full flex ${isMobile ? "flex-col justify-center items-center" : "justify-between"}  gap-2`}>
+        <div className="flex flex-col items-center justify-center"><div className="text-lg text-[#BF7B67] font-light">Keep it up Kaddu Ji{" "} {`>.<`}</div><Image src="/adarshi.gif" alt="gif"/></div>
+        <div className=" border border-[#BF7B67] h-auto rounded-lg  w-[70%]">
         <EditorProvider
           editorProps={props}
           extensions={extensions}
@@ -107,7 +124,9 @@ function Create() {
           content=""
         ></EditorProvider>
         </div>
-        <Button onClick={()=> handleSubmit()} className="bg-[#FAE9DD] text-[#BF7B67]" size="sm">Submit</Button>
+        </div>
+        
+        <Button onClick={()=> handleSubmit()} className={`bg-[#FAE9DD] text-[#BF7B67]" size="sm`}>Submit</Button>
       </div>
     </div>
   );

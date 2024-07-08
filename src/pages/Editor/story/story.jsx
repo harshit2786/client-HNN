@@ -17,6 +17,10 @@ function EditorStory() {
         setIsOpen(true);
         setDeleteId(id);
     }
+    const handleLogout = () => {
+        sessionStorage.removeItem('KadduData');
+        navigate('/');
+      }
     const handleDelete= async() =>{
         try{
             const resp = await DeleteSingleAttribute("blogs",deleteId);
@@ -47,6 +51,15 @@ function EditorStory() {
     },[])
   return (
     <div className='h-screen bg-[#fdf7f3] flex flex-col gap-8 items-center justify-center'>
+    <div className=" flex gap-4 absolute top-2 right-2">
+    <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+            </div>
     <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)}>
         
         <ModalContent>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader,Image } from "@nextui-org/react";
 import { useMobileLayout } from "../../hooks/mobilelayout";
 import { NavLink, useNavigate } from "react-router-dom";
 function Editor() {
@@ -45,20 +45,40 @@ function Editor() {
       path: "/editor/others",
     },
   ];
+  const handleLogout = () => {
+    sessionStorage.removeItem('KadduData');
+    navigate('/');
+  }
   useEffect(() => {
-    if(sessionStorage.getItem("KadduData") === null){
-        navigate('/');
+    if (sessionStorage.getItem("KadduData") === null) {
+      navigate("/");
     }
-  },[navigate])
+  }, [navigate]);
   return (
     <>
       {isMobile ? (
         <div className=" bg-[#fdf7f3] gap-2 pt-16 flex flex-col px-4 item-center justify-center">
-        <div className=" absolute top-2 right-2">
-            <Button onClick={() => navigate('/editor/create-new')} size="sm" className=" bg-[#FAE9DD] text-[#BF7B67]">+ Create</Button>
-        </div>
+        <div className="h-full flex flex-col items-center justify-center">
+          <div className=" text-md text-[#BF7B67] font-light "> Puch Puch Puch Puch... {`<3`}</div>
+          <Image className="h-80" src="/harshit.gif" alt="gif"/></div>
+          <div className=" flex gap-4 absolute top-2 right-2">
+            <Button
+              onClick={() => navigate("/editor/create-new")}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              + Create
+            </Button>
+            <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+          </div>
           {Nav1.map((item, index) => (
-            <NavLink  to={item.path}>
+            <NavLink to={item.path}>
               <Card
                 key={index}
                 className={` bg-[#FAE9DD] cursor-pointer  w-full ${item.className}`}
@@ -80,7 +100,7 @@ function Editor() {
             </NavLink>
           ))}
           {Nav2.map((item, index) => (
-            <NavLink  to={item.path}>
+            <NavLink to={item.path}>
               <Card
                 key={index}
                 className={` bg-[#FAE9DD] cursor-pointer  w-full ${item.className}`}
@@ -103,14 +123,31 @@ function Editor() {
           ))}
         </div>
       ) : (
-        <div className=" bg-[#fdf7f3] flex item-center justify-center h-screen">
-        <div className=" absolute top-2 right-2">
-        <Button onClick={() => navigate('/editor/create-new')} size="sm" className=" bg-[#FAE9DD] text-[#BF7B67]">+ Create</Button>
-        </div>
+        <div className=" bg-[#fdf7f3] flex item-center gap-8 justify-center h-screen">
+          <div className=" absolute flex gap-4 top-2 right-2">
+            <Button
+              onClick={() => navigate("/editor/create-new")}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              + Create
+            </Button>
+            <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+          </div>
+          <div className="h-full flex flex-col items-center justify-center">
+          <div className=" text-md text-[#BF7B67] font-light "> Puch Puch Puch Puch... {`<3`}</div>
+          <Image className="h-80" src="/harshit.gif" alt="gif"/></div>
+          
           <div className="flex flex-col gap-4 justify-center items-center">
             <div className="flex gap-4">
               {Nav1.map((item, index) => (
-                <NavLink  to={item.path}>
+                <NavLink to={item.path}>
                   <Card
                     key={index}
                     className={` bg-[#FAE9DD] cursor-pointer py-4 w-40 ${item.className}`}
@@ -134,7 +171,7 @@ function Editor() {
             </div>
             <div className="flex gap-4">
               {Nav2.map((item, index) => (
-                <NavLink  to={item.path}>
+                <NavLink to={item.path}>
                   <Card
                     key={index}
                     className={` bg-[#FAE9DD] cursor-pointer py-4 w-40 ${item.className}`}

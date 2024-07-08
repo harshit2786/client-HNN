@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { UpdateData, getOneBlog } from '../../../controllers/strapiController';
 import { EditorProvider } from '@tiptap/react';
 import { MenuBar, extensions, props } from '../../../components/markdown/markdown';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Image, Input } from '@nextui-org/react';
+import { useMobileLayout } from '../../../hooks/mobilelayout';
 
 function StoryEdit() {
     const {name} = useParams();
@@ -15,6 +16,11 @@ function StoryEdit() {
     const [id,setId] = useState(null);
     const generateUrl = (name) =>{
         return name.toLowerCase().replace(/\s+/g,"-");
+      }
+      const isMobile = useMobileLayout();
+      const handleLogout = () => {
+        sessionStorage.removeItem('KadduData');
+        navigate('/');
       }
     const handleSubmit = async() => {
         if(description ==="" || description === "<p></p>" || title ==="" || footer===""){
@@ -60,9 +66,18 @@ function StoryEdit() {
         }
       },[navigate])
   return (
-    <div className="h-screen flex justify-center pt-16 bg-[#fdf7f3]">
+    <div className={` ${isMobile ? "min-h-screen pb-8" : "h-screen"} flex justify-center pt-16 bg-[#fdf7f3]`}>
+    <div className=" flex gap-4 absolute top-2 right-2">
+    <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+            </div>
     <div className="w-[80%] flex gap-8 flex-col items-center">
-      <div className="w-full flex items-center justify-between ">
+    <div className={` ${isMobile ? "flex-col gap-2 items-center justify-center" : "justify-between"} w-full flex items-center `}>
         
             <Button className="bg-[#FAE9DD] text-[#BF7B67]" size="sm">
               Story
@@ -93,7 +108,9 @@ function StoryEdit() {
           label="Image URL"
         />
       </div>
-      <div className=" border border-[#BF7B67] h-auto rounded-lg  w-[80%]">
+      <div className={`w-full flex ${isMobile ? "flex-col justify-center items-center" : "justify-between h-[300px]"}  gap-2`}>
+        <div className="flex flex-col items-center justify-center"><div className="text-lg text-[#BF7B67] font-light">Hi Kaddu Ji {`<3`}</div><Image style={{height:"250px"}} src="/story_1.gif" alt="gif"/></div>
+      <div className=" border border-[#BF7B67] h-auto rounded-lg  w-[70%]">
       {description !=="" && <EditorProvider
         editorProps={props}
         extensions={extensions}
@@ -105,6 +122,7 @@ function StoryEdit() {
           />
         }
       ></EditorProvider>}
+      </div>
       </div>
       <Button disabled={description ==="" || description === "<p></p>" || title ==="" || footer===""} onPress={()=>handleSubmit()} className="bg-[#FAE9DD] text-[#BF7B67]" size="sm">Submit</Button>
     </div>

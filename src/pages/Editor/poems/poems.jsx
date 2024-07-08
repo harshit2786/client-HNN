@@ -12,7 +12,11 @@ function EditorPoems() {
     const [poems,setPoems] = useState([]);
     const [isOpen,setIsOpen] = useState(false);
     const [deleteId,setDeleteId] = useState(null);
-    const [input,setInput] = useState("")
+    const [input,setInput] = useState("");
+    const handleLogout = () => {
+        sessionStorage.removeItem('KadduData');
+        navigate('/');
+      }
     useEffect(()=> {
         const fetchNotes = async()=> {
             try{
@@ -47,6 +51,15 @@ function EditorPoems() {
       },[navigate])
   return (
     <div className='h-screen bg-[#fdf7f3] flex flex-col gap-8 items-center justify-center'>
+    <div className=" flex gap-4 absolute top-2 right-2">
+    <Button
+              onClick={() => handleLogout()}
+              size="sm"
+              className=" bg-[#FAE9DD] text-[#BF7B67]"
+            >
+              Logout
+            </Button>
+            </div>
     <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)}>
         
         <ModalContent>

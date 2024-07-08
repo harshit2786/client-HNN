@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit'
 import cn from 'classnames'
 import Focus from '@tiptap/extension-focus'
 import Placeholder from '@tiptap/extension-placeholder'
+import Underline from '@tiptap/extension-underline'
 import { useCurrentEditor } from "@tiptap/react";
 import { FaBold } from "react-icons/fa";
 import { FaItalic } from "react-icons/fa";
@@ -13,6 +14,7 @@ import { FaStrikethrough } from "react-icons/fa";
 import { TbBlockquote } from "react-icons/tb";
 import { FaListOl } from "react-icons/fa";
 import { FaListUl } from "react-icons/fa";
+import { FaUnderline } from "react-icons/fa";
 import { useEffect } from 'react'
 
 
@@ -27,6 +29,12 @@ export const extensions = [
     emptyEditorClass: 'Write Content',
     placeholder: 'Write Content'
   }),
+  Underline.configure({
+    HTMLAttributes: {
+      class: 'my-custom-class',
+    },
+  }),
+  
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -73,6 +81,13 @@ export const MenuBar = ({descriptionContent,setDescriptionContent}) => {
         className={editor.isActive("italic") ? "is-active" : ""}
       >
         <FaItalic/>
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        disabled={!editor.can().chain().focus().toggleUnderline().run()}
+        className={editor.isActive("strike") ? "is-active" : ""}
+      >
+        <FaUnderline/>
       </button>
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}

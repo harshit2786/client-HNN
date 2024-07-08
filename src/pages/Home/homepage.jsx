@@ -152,8 +152,8 @@ const Homepage = () => {
             </div>
             </NavbarMenu>
           </Navbar>
-          <div>
-            <Outlet/>
+          <div className=" min-h-screen w-full bg-[#fdf6f3]">
+            <Outlet />
           </div>
         </div>
       ) : (
@@ -230,7 +230,7 @@ const Homepage = () => {
               ))}
             </div>
           </div>
-          <div className="h-full">
+          <div className="h-full w-full bg-[#fdf6f3]">
             <Outlet />
           </div>
         </div>
