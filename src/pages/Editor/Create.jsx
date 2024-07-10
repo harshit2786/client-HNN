@@ -50,6 +50,27 @@ function Create() {
         console.log("Error",error)
     }
   }
+  const handleSubmitDraft = async() => {
+    if(Array.from(options).length ===0 || description ==="" || description === "<p></p>" || title ==="" || footer===""){
+        return;
+    }
+    const formData = {
+        Title: title,
+        Content: description,
+        Footer: footer,
+        Type: Array.from(options)[0],
+        url:url,
+        Path:generateUrl(title)
+    }
+    try{
+        const resp = await CreateData("drafts",formData);
+        console.log("Created successfully",resp);
+        navigate('/editor');
+    }
+    catch(error){
+        console.log("Error",error)
+    }
+  }
   useEffect(() => {
     if(sessionStorage.getItem("KadduData") === null){
         navigate('/');
@@ -125,8 +146,11 @@ function Create() {
         ></EditorProvider>
         </div>
         </div>
-        
+        <div className=" flex gap-2 items-center justify-center">
         <Button onClick={()=> handleSubmit()} className={`bg-[#FAE9DD] text-[#BF7B67]" size="sm`}>Submit</Button>
+        <Button onClick={()=> handleSubmitDraft()} className={`bg-[#FAE9DD] text-[#BF7B67]" size="sm`}>Save as Draft</Button>
+        </div>
+        
       </div>
     </div>
   );
