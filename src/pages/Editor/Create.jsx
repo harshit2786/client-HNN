@@ -38,7 +38,7 @@ function Create() {
         Content: description,
         Footer: footer,
         Type: Array.from(options)[0],
-        url:url,
+        Summary:url,
         Path:generateUrl(title)
     }
     try{
@@ -59,7 +59,7 @@ function Create() {
         Content: description,
         Footer: footer,
         Type: Array.from(options)[0],
-        url:url,
+        Summary:url,
         Path:generateUrl(title)
     }
     try{
@@ -127,7 +127,7 @@ function Create() {
             variant="bordered"
             size="sm"
             className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
-            label="Image URL"
+            label="Summary"
           />
         </div>
         <div className={`w-full flex ${isMobile ? "flex-col justify-center items-center" : "justify-between"}  gap-2`}>

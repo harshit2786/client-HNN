@@ -30,7 +30,7 @@ function DraftNote() {
             Title: title,
             Content: description,
             Footer: footer,
-            url:url,
+            Summary:url,
             Type:"Note",
             Path:generateUrl(title)
         }
@@ -51,7 +51,7 @@ function DraftNote() {
             Title: title,
             Content: description,
             Footer: footer,
-            url:url,
+            Summary:url,
             Path:generateUrl(title)
         }
         try{
@@ -70,7 +70,7 @@ function DraftNote() {
                 setTitle(resp.data[0].attributes.Title);
                 setDescription(resp.data[0].attributes.Content);
                 setFooter(resp.data[0].attributes.Footer);
-                setUrl(resp.data[0].attributes.url);
+                setUrl(resp.data[0].attributes.Summary);
                 setId(resp.data[0].id);
             }
             catch(error){
@@ -126,7 +126,7 @@ function DraftNote() {
           variant="bordered"
           size="sm"
           className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
-          label="Image URL"
+          label="Summary"
         />
       </div>
       <div className={`w-full flex ${isMobile ? "flex-col justify-center items-center" : "justify-between h-[300px]"}  gap-2`}>

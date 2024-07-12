@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -33,6 +34,10 @@ function EditorOthers() {
   const [input, setInput] = useState("");
   const [inputDraft,setInputDraft] = useState("")
   const [drafts, setDrafts] = useState([]);
+  const [search,setSearch] = useState("");
+  const [loader,setLoader] = useState(true);
+  const [filterStories,setFilterStories] = useState([]);
+  const [filterDrafts,setFilterDrafts] = useState([]);
   const openModal = (id) => {
     setIsOpen(true);
     setDeleteId(id);
@@ -76,12 +81,18 @@ function EditorOthers() {
         setDrafts(response.data);
         setStories(resp.data);
         console.log(resp.data);
+        setLoader(false);
       } catch (error) {
         console.log("Error:", error);
+        setLoader(false)
       }
     };
     fetchNotes();
   }, []);
+  useEffect(() => {
+    setFilterDrafts(drafts.filter((story) => story.attributes.Title.toLowerCase().includes(search.toLowerCase())));
+    setFilterStories(stories.filter((story) => story.attributes.Title.toLowerCase().includes(search.toLowerCase())));
+  },[search,drafts,stories])
   return (
     <div className="h-screen bg-[#fdf7f3] flex flex-col gap-8 items-center justify-center">
       <div className=" flex gap-4 absolute top-2 right-2">
@@ -149,10 +160,20 @@ function EditorOthers() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <div className="text-xl text-[#BF7B67]">Others</div>
+      <div className="w-[80%] flex items-center justify-between">
+        <div className="text-xl text-[#BF7B67]">Others</div>
+        <Input startContent={
+            <lord-icon
+              src="https://cdn.lordicon.com/unukghxb.json"
+              trigger="hover"
+              colors="primary:#BF7B67,secondary:#BF7B67"
+              style={{ height: "30px", width: "30px" }}
+            ></lord-icon>
+          } size="sm" radius="full" variant="flat" className="w-[200px]" value={search} onChange={(e)=> setSearch(e.target.value)} />
+      </div>
 
-      <div className="bg-[#FAE9DD] h-[300px] border rounded-lg w-[80%] border-[#BF7B67] overflow-y-auto">
-        <Table removeWrapper>
+      <div className="bg-[#FAE9DD] h-[300px] border flex justify-center rounded-lg w-[80%] border-[#BF7B67] overflow-y-auto">
+      {loader ? <Spinner color="warning"/> : <Table removeWrapper>
           <TableHeader>
             <TableColumn>
               <div className="item-center text-[#BF7B67] text-xs">
@@ -170,7 +191,7 @@ function EditorOthers() {
             </TableColumn>
           </TableHeader>
           <TableBody emptyContent={"No items to display."}>
-            {stories?.map((item) => (
+            {filterStories?.map((item) => (
               <TableRow>
                 <TableCell>
                   <Chip
@@ -207,7 +228,7 @@ function EditorOthers() {
                 </TableCell>
               </TableRow>
             ))}
-            {drafts?.map((item) => (
+            {filterDrafts?.map((item) => (
               <TableRow>
                 <TableCell>
                   <Chip className="text-[#BF7B67] font-light text-xs" size="sm">
@@ -244,7 +265,7 @@ function EditorOthers() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table>}
       </div>
     </div>
   );

@@ -72,11 +72,11 @@ function Stories() {
                 </div>
               )}
               <div className="flex justify-between">
-                <p onClick={()=> navigate(`/stories/${story.attributes.Path}`)} className="text-[#a2441b] cursor-pointer hover:underline text-sm">
-                  "{story.attributes.Title}" by {story.attributes.Footer}
+                <p onClick={()=> navigate(`/stories/${story?.attributes?.Path}`)} className="text-[#a2441b] cursor-pointer hover:underline text-sm">
+                  "{story?.attributes?.Title}" by {story?.attributes?.Footer}
                 </p>
                 <Chip
-                onClick={()=> navigate(`/stories/${story.attributes.Path}`)}
+                onClick={()=> navigate(`/stories/${story?.attributes?.Path}`)}
                   className="text-[#BF7B67] bg-[#f7d2c7] cursor-pointer font-light text-xs"
                   size="sm"
                 >
@@ -84,8 +84,7 @@ function Stories() {
                 </Chip>
               </div>
               <p className="text-xs">
-                {story.attributes.Content.replace(/<[^>]+>/g, " ").slice(0,400)}
-                ...
+                {story?.attributes?.Summary}
               </p>
             </div>
           ))}
