@@ -74,7 +74,7 @@ function Essays() {
             </div>
           ) : (
             filterStories?.map((story, index) => (
-              <div className=" flex flex-col gap-2">
+              <div className=" flex pb-2 flex-col gap-2">
                 {index !== 0 && (
                   <div className="px-4">
                     <Divider style={{ backgroundColor: "#BF7B67" }} />
@@ -99,7 +99,7 @@ function Essays() {
                     Read Memoir
                   </Chip>
                 </div>
-                <p className="text-xs">{story?.attributes?.Content}</p>
+                <p className="text-xs whitespace-pre-line w-full leading-relaxed">{story?.attributes?.Content}</p>
               </div>
             ))
           )}

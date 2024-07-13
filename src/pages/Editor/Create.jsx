@@ -6,6 +6,7 @@ import {
   DropdownTrigger,
   Input,
   Image,
+  Textarea,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { EditorProvider } from "@tiptap/react";
@@ -90,8 +91,8 @@ function Create() {
   return (
     <div
       className={`${
-        isMobile ? "min-h-screen pb-8" : " h-screen"
-      } flex justify-center pt-16 bg-[#fdf7f3]`}
+        isMobile ? "min-h-screen pb-8 pt-16" : " overflow-y-auto h-screen pt-10"
+      } flex justify-center bg-[#fdf7f3]`}
     >
       <div className=" flex gap-4 absolute top-2 right-2">
         <Button
@@ -142,13 +143,19 @@ function Create() {
             className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
             label="End"
           />
-          <Input
+          <Textarea
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onValueChange={setUrl}
             variant="bordered"
             size="sm"
             className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
             label="Summary"
+            disableAnimation
+            disableAutosize
+            classNames={{
+              base: "max-w-xs",
+              input: "resize-y min-h-[40px]",
+            }}
           />
         </div>
         <div

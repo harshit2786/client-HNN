@@ -11,7 +11,7 @@ import {
   extensions,
   props,
 } from "../../../components/markdown/markdown";
-import { Button, Image, Input } from "@nextui-org/react";
+import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import { useMobileLayout } from "../../../hooks/mobilelayout";
 
 function DraftPoem() {
@@ -103,9 +103,9 @@ function DraftPoem() {
   }, [navigate]);
   return (
     <div
-      className={` ${
-        isMobile ? "min-h-screen pb-8" : "h-screen"
-      } flex justify-center pt-16 bg-[#fdf7f3]`}
+      className={`${
+        isMobile ? "min-h-screen pb-8 pt-16" : " overflow-y-auto h-screen pt-10"
+      } flex justify-center bg-[#fdf7f3]`}
     >
       <div className=" flex gap-4 absolute top-2 right-2">
         <Button
@@ -144,13 +144,19 @@ function DraftPoem() {
             className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
             label="End"
           />
-          <Input
+          <Textarea
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onValueChange={setUrl}
             variant="bordered"
             size="sm"
             className=" bg-[#FAE9DD] border-[#BF7B67] text-[#BF7B67] w-52 text-xs"
             label="Summary"
+            disableAnimation
+            disableAutosize
+            classNames={{
+              base: "max-w-xs",
+              input: "resize-y min-h-[40px]",
+            }}
           />
         </div>
         <div
