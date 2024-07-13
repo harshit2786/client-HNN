@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 function Others() {
   const [stories, setStories] = useState([]);
-    const [search,setSearch] = useState("");
-    const [loading,setLoading] = useState(true);
-    const [filterStories,setFilterStories] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [filterStories, setFilterStories] = useState([]);
   const isMobile = useMobileLayout();
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,20 +26,22 @@ function Others() {
     };
     fetchNotes();
   }, []);
-  useEffect(()=> {
-    if(stories.length >0){
-        let arr = [];
-        arr = stories.filter((item) => item.attributes.Title.toLowerCase().includes(search.toLowerCase()) );
-        setFilterStories(arr);
+  useEffect(() => {
+    if (stories.length > 0) {
+      let arr = [];
+      arr = stories.filter((item) =>
+        item.attributes.Title.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilterStories(arr);
     }
-  },[search,stories])
+  }, [search, stories]);
   return (
     <div className="h-full flex items-center flex-col w-full">
       <div className="w-full px-8 pt-8 border-[#BF7B67] flex justify-between sticky border-b  h-20">
         <div className="text-[#e7946f] text-2xl">Others</div>
         <Input
-            value={search}
-            onChange={(e)=> setSearch(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           startContent={
             <lord-icon
               src="https://cdn.lordicon.com/unukghxb.json"
@@ -60,34 +62,47 @@ function Others() {
       >
         <div className="border-[#BF7B67] p-4 flex flex-col gap-2 rounded-lg border min-h-[200px]">
           <p className=" text-[#e7946f] pb-4 text-md">Browse ~</p>
-          {loading ? <Spinner classNames={{label:"text-[#e7946f]"}} color="warning" label="Loading..."/> : filterStories?.length ===0 ? 
+          {loading ? (
+            <Spinner
+              classNames={{ label: "text-[#e7946f]" }}
+              color="warning"
+              label="Loading..."
+            />
+          ) : filterStories?.length === 0 ? (
             <div className="w-full pt-[80px] flex items-center justify-center">
-                <p className="text-[#e7946f] text-xs">No items to display.</p>
+              <p className="text-[#e7946f] text-xs">No items to display.</p>
             </div>
-          : filterStories?.map((story, index) => (
-            <div className=" flex flex-col gap-2">
-              {index !== 0 && (
-                <div className="px-4">
-                  <Divider style={{ backgroundColor: "#BF7B67" }} />
+          ) : (
+            filterStories?.map((story, index) => (
+              <div className=" flex flex-col gap-2">
+                {index !== 0 && (
+                  <div className="px-4">
+                    <Divider style={{ backgroundColor: "#BF7B67" }} />
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <p
+                    onClick={() =>
+                      navigate(`/others/${story?.attributes?.Path}`)
+                    }
+                    className="text-[#a2441b] cursor-pointer hover:underline text-sm"
+                  >
+                    "{story?.attributes?.Title}" by {story?.attributes?.Footer}
+                  </p>
+                  <Chip
+                    onClick={() =>
+                      navigate(`/others/${story?.attributes?.Path}`)
+                    }
+                    className="text-[#BF7B67] bg-[#f7d2c7] cursor-pointer font-light text-xs"
+                    size="sm"
+                  >
+                    Read
+                  </Chip>
                 </div>
-              )}
-              <div className="flex justify-between">
-                <p onClick={()=> navigate(`/others/${story?.attributes?.Path}`)} className="text-[#a2441b] cursor-pointer hover:underline text-sm">
-                  "{story?.attributes?.Title}" by {story?.attributes?.Footer}
-                </p>
-                <Chip
-                onClick={()=> navigate(`/others/${story?.attributes?.Path}`)}
-                  className="text-[#BF7B67] bg-[#f7d2c7] cursor-pointer font-light text-xs"
-                  size="sm"
-                >
-                  Read
-                </Chip>
+                <p className="text-xs">{story?.attributes?.Content}</p>
               </div>
-              <p className="text-xs">
-                {story?.attributes?.Summary}
-              </p>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

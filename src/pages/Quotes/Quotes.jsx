@@ -8,7 +8,7 @@ function Quotes() {
   const [stories, setStories] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStories, setFilterStories] = useState([]);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const isMobile = useMobileLayout();
   const navigate = useNavigate();
   useEffect(() => {
@@ -62,7 +62,13 @@ function Quotes() {
       >
         <div className="border-[#BF7B67] p-4 flex flex-col gap-2 rounded-lg border min-h-[200px]">
           <p className=" text-[#e7946f] pb-4 text-md">Browse ~</p>
-          {loading ? <Spinner classNames={{label:"text-[#e7946f]"}} color="warning" label="Loading..."/> : filterStories?.length === 0 ? (
+          {loading ? (
+            <Spinner
+              classNames={{ label: "text-[#e7946f]" }}
+              color="warning"
+              label="Loading..."
+            />
+          ) : filterStories?.length === 0 ? (
             <div className="w-full pt-[80px] flex items-center justify-center">
               <p className="text-[#e7946f] text-xs">No Quotes to display.</p>
             </div>
@@ -93,9 +99,7 @@ function Quotes() {
                     Read Quote
                   </Chip>
                 </div>
-                <p className="text-xs">
-                {story?.attributes?.Summary}
-              </p>
+                <p className="text-xs">{story?.attributes?.Content}</p>
               </div>
             ))
           )}
