@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getOneTypeBlog } from "../../controllers/strapiController";
-import { Chip, Divider, Input, Spinner } from "@nextui-org/react";
+import { Chip, Divider, Input, Pagination, Spinner } from "@nextui-org/react";
 import { useMobileLayout } from "../../hooks/mobilelayout";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,9 @@ function Others() {
   const [filterStories, setFilterStories] = useState([]);
   const isMobile = useMobileLayout();
   const navigate = useNavigate();
+  const perPage = 10;
+  const [page,setPage] = useState(1);
+  const [table,setTable] = useState([])
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -32,9 +35,17 @@ function Others() {
       arr = stories.filter((item) =>
         item.attributes.Title.toLowerCase().includes(search.toLowerCase())
       );
+      arr = arr.sort((a, b) => new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt));
       setFilterStories(arr);
     }
   }, [search, stories]);
+  useEffect(() => {
+    if(page){
+      const si = perPage * (page-1);
+      const ei = si + perPage;
+      setTable(filterStories.slice(si,ei));
+    }
+  },[page,filterStories,perPage])
   return (
     <div className="h-full flex items-center flex-col w-full">
       <div className="w-full px-8 pt-8 border-[#BF7B67] flex justify-between sticky border-b  h-20">
@@ -73,7 +84,7 @@ function Others() {
               <p className="text-[#e7946f] text-xs">No items to display.</p>
             </div>
           ) : (
-            filterStories?.map((story, index) => (
+            table?.map((story, index) => (
               <div className=" flex flex-col gap-2 pb-2">
                 {index !== 0 && (
                   <div className="px-4">
@@ -104,6 +115,16 @@ function Others() {
             ))
           )}
         </div>
+        {stories.length>0 && <div className=" pt-2  w-full flex items-center justify-center">
+        <Pagination size="sm" classNames={{
+        prev:" bg-[#f3ccb1] text-white",
+        next:"bg-[#f3ccb1] text-white",
+        item: "text-white text-small bg-[#f3ccb1]",
+        chevronNext:"text-white",
+        cursor:"bg-[#BF7B67]",
+        
+      }} total={Math.ceil(stories.length/perPage)} page={page} onChange={setPage} showControls/>
+        </div>}
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import SinglePoem from "./pages/Poems/Poem/poem";
 import SingleStory from "./pages/Stories/Story/story";
 import SingleEssay from "./pages/Essays/Essay/Essay";
 import SingleNote from "./pages/Notes/Note/note";
-import SingleQuote from "./pages/Quotes/Quote/Quote";
 import SingleOther from "./pages/Others/Other/other";
 import Others from "./pages/Others/Others";
 import Quotes from "./pages/Quotes/Quotes";
@@ -86,7 +85,6 @@ function App() {
             </Route>
             <Route exact path="/quotes">
               <Route exact path="" element={<Quotes />} />
-              <Route exact path="/quotes/:quote" element={<SingleQuote />} />
             </Route>
             <Route exact path="/others">
               <Route exact path="" element={<Others />} />
