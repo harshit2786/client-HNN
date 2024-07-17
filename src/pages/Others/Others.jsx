@@ -71,7 +71,7 @@ function Others() {
           isMobile ? "" : "overflow-y-auto "
         } `}
       >
-        <div className="border-[#BF7B67] p-4 flex flex-col gap-2 rounded-lg border min-h-[200px]">
+        <div className="border-[#BF7B67] bg-[#FAE9DD] p-4 flex flex-col gap-2 rounded-lg border min-h-[200px]">
           <p className=" text-[#e7946f] pb-4 text-md">Browse ~</p>
           {loading ? (
             <Spinner
@@ -98,7 +98,7 @@ function Others() {
                     }
                     className="text-[#a2441b] cursor-pointer hover:underline text-sm"
                   >
-                    "{story?.attributes?.Title}" by {story?.attributes?.Footer}
+                    "{story?.attributes?.Title}"
                   </p>
                   <Chip
                     onClick={() =>

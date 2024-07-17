@@ -12,8 +12,10 @@ import React, { useEffect, useState } from "react";
 import { EditorProvider } from "@tiptap/react";
 import { MenuBar, props, extensions } from "../../components/markdown/markdown";
 import { useNavigate } from "react-router-dom";
-import { CreateData } from "../../controllers/strapiController";
+import { CreateData, getAllData } from "../../controllers/strapiController";
 import { useMobileLayout } from "../../hooks/mobilelayout";
+import Toastify from 'toastify-js'
+import "toastify-js/src/toastify.css"
 
 function Create() {
   const isMobile = useMobileLayout();
@@ -23,6 +25,8 @@ function Create() {
   const [description, setDescription] = useState("");
   const [footer, setFooter] = useState("");
   const [url, setUrl] = useState("");
+  const [blogPaths,setBlogPaths] = useState([]);
+  const [draftPaths,setDraftPaths] = useState([]);
   const [title, setTitle] = useState("");
   const generateUrl = (name) => {
     return name.toLowerCase().replace(/\s+/g, "-");
@@ -39,7 +43,34 @@ function Create() {
       title === "" ||
       footer === ""
     ) {
+      Toastify({
+        text: "Kaddu ji! You must fill all the fields",
+        gravity: "bottom", // `top` or `bottom`
+        position: "right",
+        style: {
+          background: "#FAE9DD",
+          color: "#BF7B67" ,
+          boxShadow: "none",
+          fontSize: "12px"
+        }
+      }).showToast();
       return;
+    }
+    for(let i=0;i<blogPaths.length;i++){
+      if(blogPaths[i].attributes.Type === Array.from(options)[0] && generateUrl(title)===blogPaths[i].attributes.Path){
+        Toastify({
+          text: `You already have a ${Array.from(options)[0]} with this name Kaddu!`,
+          gravity: "bottom", // `top` or `bottom`
+          position: "right",
+          style: {
+            background: "#FAE9DD",
+            color: "#BF7B67" ,
+            boxShadow: "none",
+            fontSize: "12px"
+          }
+        }).showToast();
+        return;
+      }
     }
     const formData = {
       Title: title,
@@ -65,7 +96,34 @@ function Create() {
       title === "" ||
       footer === ""
     ) {
+      Toastify({
+        text: "Kaddu ji! You must fill all the fields",
+        gravity: "bottom", // `top` or `bottom`
+        position: "right",
+        style: {
+          background: "#FAE9DD",
+          color: "#BF7B67" ,
+          boxShadow: "none",
+          fontSize: "12px"
+        }
+      }).showToast();
       return;
+    }
+    for(let i=0;i<draftPaths.length;i++){
+      if(draftPaths[i].attributes.Type === Array.from(options)[0] && generateUrl(title)===draftPaths[i].attributes.Path){
+        Toastify({
+          text: `You already have a ${Array.from(options)[0]} with this name Kaddu!`,
+          gravity: "bottom", // `top` or `bottom`
+          position: "right",
+          style: {
+            background: "#FAE9DD",
+            color: "#BF7B67" ,
+            boxShadow: "none",
+            fontSize: "12px"
+          }
+        }).showToast();
+        return;
+      }
     }
     const formData = {
       Title: title,
@@ -83,6 +141,20 @@ function Create() {
       console.log("Error", error);
     }
   };
+  useEffect(() => {
+    const getAllBlogs = async()=> {
+      try{
+        const resp1 = await getAllData("blogs");
+        const resp2 = await getAllData("drafts");
+        setBlogPaths(resp1.data);
+        setDraftPaths(resp2.data);
+      }
+      catch(error){
+        console.log("Error:",error)
+      }
+    }
+    getAllBlogs();
+  },[])
   useEffect(() => {
     if (sessionStorage.getItem("KadduData") === null) {
       navigate("/");

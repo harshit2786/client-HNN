@@ -75,7 +75,7 @@ const Homepage = () => {
     <>
       {isMobile ? (
         <div>
-          <Navbar isBordered className="bg-[#FAE9DD]" isBlurred={false} onMenuOpenChange={setIsMenuOpen}>
+          <Navbar isMenuOpen={isMenuOpen} isBordered className="bg-[#FAE9DD]" isBlurred={false} onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent>
               <NavbarMenuToggle className="sm:hidden" />
               <NavbarBrand>
@@ -98,7 +98,7 @@ const Homepage = () => {
                     colors="primary:#BF7B67,secondary:#BF7B67"
                     style={{ width: "25px", height: "25px" }}
                   ></lord-icon>
-                  <p>{item.text}</p>
+                  <p onClick={()=>setIsMenuOpen(false)}>{item.text}</p>
                 </div>
                 </NavLink>
               ))}
@@ -121,7 +121,7 @@ const Homepage = () => {
                     colors="primary:#BF7B67,secondary:#BF7B67"
                     style={{ width: "25px", height: "25px" }}
                   ></lord-icon>
-                  <p>{item.text}</p>
+                  <p onClick={()=>setIsMenuOpen(false)}>{item.text}</p>
                 </div>
                 </NavLink>
               ))}
@@ -145,7 +145,7 @@ const Homepage = () => {
                     colors="primary:#BF7B67,secondary:#BF7B67"
                     style={{ width: "25px", height: "25px" }}
                   ></lord-icon>
-                  <p>{item.text}</p>
+                  <p onClick={()=>setIsMenuOpen(false)}>{item.text}</p>
                 </div>
                 </NavLink>
               ))}

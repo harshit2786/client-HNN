@@ -10,10 +10,9 @@ function Quotes() {
   const [filterStories, setFilterStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const isMobile = useMobileLayout();
-  const navigate = useNavigate();
   const perPage = 10;
-  const [page,setPage] = useState(1);
-  const [table,setTable] = useState([])
+  const [page, setPage] = useState(1);
+  const [table, setTable] = useState([]);
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -35,17 +34,20 @@ function Quotes() {
       arr = stories.filter((item) =>
         item.attributes.Title.toLowerCase().includes(search.toLowerCase())
       );
-      arr = arr.sort((a, b) => new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt))
+      arr = arr.sort(
+        (a, b) =>
+          new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
+      );
       setFilterStories(arr);
     }
   }, [search, stories]);
   useEffect(() => {
-    if(page){
-      const si = perPage * (page-1);
+    if (page) {
+      const si = perPage * (page - 1);
       const ei = si + perPage;
-      setTable(filterStories.slice(si,ei));
+      setTable(filterStories.slice(si, ei));
     }
-  },[page,filterStories,perPage])
+  }, [page, filterStories, perPage]);
   return (
     <div className="h-full flex items-center flex-col w-full">
       <div className="w-full px-8 pt-8 border-[#BF7B67] flex justify-between sticky border-b  h-20">
@@ -85,46 +87,33 @@ function Quotes() {
             </div>
           ) : (
             table?.map((story, index) => (
-              <div className=" flex pb-2 flex-col gap-2">
-                {index !== 0 && (
-                  <div className="px-4">
-                    <Divider style={{ backgroundColor: "#BF7B67" }} />
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <p
-                    onClick={() =>
-                      navigate(`/quotes/${story?.attributes?.Path}`)
-                    }
-                    className="text-[#a2441b] cursor-pointer hover:underline text-sm"
-                  >
-                    "{story?.attributes?.Title}" by {story?.attributes?.Footer}
-                  </p>
-                  <Chip
-                    onClick={() =>
-                      navigate(`/quotes/${story?.attributes?.Path}`)
-                    }
-                    className="text-[#BF7B67] bg-[#f7d2c7] cursor-pointer font-light text-xs"
-                    size="sm"
-                  >
-                    Read Quote
-                  </Chip>
+              <div className={` flex pb-2 w-full gap-2 ${index % 2 ===0 ? "" : "flex-row-reverse"}`}>
+                <div className={`border-[#BF7B67] bg-[#FAE9DD] ${isMobile ? "w-full" : " w-[60%]"} p-4 flex flex-col gap-2 rounded-lg border`}>
+                  <div className=" text-md" dangerouslySetInnerHTML={{__html: story.attributes.Complete}}></div>
+                  <div className=" text-sm">~{story.attributes.Footer}</div>
                 </div>
-                <p className="text-xs whitespace-pre-line w-full leading-relaxed">{story?.attributes?.Content}</p>
               </div>
             ))
           )}
         </div>
-        {stories.length>0 && <div className=" pt-2  w-full flex items-center justify-center">
-        <Pagination size="sm" classNames={{
-        prev:" bg-[#f3ccb1] text-white",
-        next:"bg-[#f3ccb1] text-white",
-        item: "text-white text-small bg-[#f3ccb1]",
-        chevronNext:"text-white",
-        cursor:"bg-[#BF7B67]",
-        
-      }} total={Math.ceil(stories.length/perPage)} page={page} onChange={setPage} showControls/>
-        </div>}
+        {stories.length > 0 && (
+          <div className=" pt-2  w-full flex items-center justify-center">
+            <Pagination
+              size="sm"
+              classNames={{
+                prev: " bg-[#f3ccb1] text-white",
+                next: "bg-[#f3ccb1] text-white",
+                item: "text-white text-small bg-[#f3ccb1]",
+                chevronNext: "text-white",
+                cursor: "bg-[#BF7B67]",
+              }}
+              total={Math.ceil(stories.length / perPage)}
+              page={page}
+              onChange={setPage}
+              showControls
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-
+import { LoginUserGrabJwt } from "./publiccontroller";
 export const NavigateSign = async (email, password) => {
     // Check if user exists.
     let emailExists = false;
@@ -20,7 +20,8 @@ export const NavigateSign = async (email, password) => {
     console.log(isEmailExist);
     if(emailExists){
         if(password === CryptoJS.AES.decrypt(isEmailExist[0].Password2, `${process.env.REACT_APP_SECRET_KEY}`).toString(CryptoJS.enc.Utf8)){
-            sessionStorage.setItem("KadduData", JSON.stringify({email:email,password:isEmailExist[0].Password2}));
+            const login = await LoginUserGrabJwt(email);
+            sessionStorage.setItem("KadduData", JSON.stringify(login));
             return true;
         }
         else{

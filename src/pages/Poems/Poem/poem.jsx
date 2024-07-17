@@ -3,6 +3,7 @@ import { getOneBlog } from "../../../controllers/strapiController";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMobileLayout } from "../../../hooks/mobilelayout";
 import { BreadcrumbItem, Breadcrumbs, Button, Spinner } from "@nextui-org/react";
+import Comment from "../../../components/Comment/Comment";
 
 function SinglePoem() {
   const { poem } = useParams();
@@ -14,6 +15,8 @@ function SinglePoem() {
   const [loader, setLoader] = useState(true);
   const [date, setDate] = useState("");
   const isMobile = useMobileLayout();
+  const [likeIds,setLikeIds] = useState([]);
+  const [commentIds,setCommentIds] = useState([]);
 
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -49,6 +52,9 @@ function SinglePoem() {
         setId(resp.data[0].id);
         setDate(formatTimestamp(resp.data[0].attributes.createdAt));
         setLoader(false);
+        setLikeIds(resp.data[0].attributes.likes.data.map((item) => { return item.id}));
+        setCommentIds(resp.data[0].attributes.comments.data.map((item) => { return item.id}));
+
         if(resp.data.length === 0){
           navigate('/');
         }
@@ -102,7 +108,9 @@ function SinglePoem() {
           ></div>
           </>}
         </div>
+        {!loader && <Comment likeIds={likeIds} commentIds={commentIds}/>}
       </div>
+      
     </div>
   );
 }

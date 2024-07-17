@@ -147,3 +147,59 @@ export const CreateData = async (MetricName, newData) => {
     let data = response.json();
     return data;
   };
+
+  export const getFilteredByTwoRelation = async (MetricName,filterKey1,filterValue1,filterKey2,filterValue2) => {
+    const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[${filterKey1}][id][$eq]=${filterValue1}&filters[${filterKey2}][id][$eq]=${filterValue2}`;
+    let jwt;
+    if (JSON.parse(sessionStorage.getItem("userData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+    } else {
+      jwt = "";
+    }
+    const response = await fetch(URL, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        // Authorization: Bearer ${jwt}
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error = new Error(errorData?.message || 'Error fetching data');
+      error.status = response.status;
+      error.data = errorData;
+      throw error;
+    }
+    let data = response.json();
+    return data;
+  };
+
+  export const getFilteredByOneRelation = async (MetricName,filterKey1,filterValue1) => {
+    const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[${filterKey1}][id][$eq]=${filterValue1}`;
+    let jwt;
+    if (JSON.parse(sessionStorage.getItem("userData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+    } else {
+      jwt = "";
+    }
+    const response = await fetch(URL, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        // Authorization: Bearer ${jwt}
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error = new Error(errorData?.message || 'Error fetching data');
+      error.status = response.status;
+      error.data = errorData;
+      throw error;
+    }
+    let data = response.json();
+    return data;
+  };

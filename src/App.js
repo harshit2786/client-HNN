@@ -35,6 +35,7 @@ import DraftMemoir from "./pages/Editor/memoir/DraftMemoir";
 import DraftNote from "./pages/Editor/notes/DraftNote";
 import DraftQuote from "./pages/Editor/quotes/DraftQuote";
 import DraftOther from "./pages/Editor/others/DraftOther";
+import Home from "./pages/Home/Home";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
           </Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Homepage />}>
+          <Route exact path="" element={<Home/>} />
             <Route exact path="/about" element={<About />} />
             <Route exact path="/contact" element={<Contact />} />
             <Route exact path="/stories">
