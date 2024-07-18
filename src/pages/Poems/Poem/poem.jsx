@@ -17,6 +17,9 @@ function SinglePoem() {
   const isMobile = useMobileLayout();
   const [likeIds,setLikeIds] = useState([]);
   const [commentIds,setCommentIds] = useState([]);
+  const userId = sessionStorage.getItem("userData")
+    ? JSON.parse(sessionStorage.getItem("userData"))
+    : null;
 
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -41,7 +44,10 @@ function SinglePoem() {
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     return `${month} ${day}, ${year} ${hours}:${minutes}`;
   }
-
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    navigate("/");
+  };
   useEffect(() => {
     const getData = async () => {
       try {
@@ -79,6 +85,7 @@ function SinglePoem() {
             <p className="text-[#BF7B67] ">{title}</p>
           </BreadcrumbItem>
         </Breadcrumbs>
+        <div className="flex items-center gap-2">
         <Button
           size="sm"
           className=" bg-[#FAE9DD] text-[#BF7B67]"
@@ -86,6 +93,14 @@ function SinglePoem() {
         >
           Back to Poems
         </Button>
+        {userId && <Button
+          onClick={() => handleLogout()}
+          size="sm"
+          className=" bg-[#FAE9DD] text-[#BF7B67]"
+        >
+          Logout
+        </Button>}
+        </div>
       </div>
       <div
         className={`px-8 py-8 w-full h-full ${
@@ -108,7 +123,7 @@ function SinglePoem() {
           ></div>
           </>}
         </div>
-        {!loader && <Comment likeIds={likeIds} commentIds={commentIds}/>}
+        {!loader && <Comment likeIds={likeIds} commentIds={commentIds} id={id}/>}
       </div>
       
     </div>

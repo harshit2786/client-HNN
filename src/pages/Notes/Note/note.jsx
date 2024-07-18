@@ -3,6 +3,7 @@ import { getOneBlog } from "../../../controllers/strapiController";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMobileLayout } from "../../../hooks/mobilelayout";
 import { BreadcrumbItem, Breadcrumbs, Button, Spinner } from "@nextui-org/react";
+import Comment from "../../../components/Comment/Comment";
 
 function SingleNote() {
   const { note } = useParams();
@@ -14,6 +15,11 @@ function SingleNote() {
   const [loader, setLoader] = useState(true);
   const [date, setDate] = useState("");
   const isMobile = useMobileLayout();
+  const [likeIds,setLikeIds] = useState([]);
+  const [commentIds,setCommentIds] = useState([]);
+  const userId = sessionStorage.getItem("userData")
+    ? JSON.parse(sessionStorage.getItem("userData"))
+    : null;
 
   function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -38,7 +44,10 @@ function SingleNote() {
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     return `${month} ${day}, ${year} ${hours}:${minutes}`;
   }
-
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    navigate("/");
+  };
   useEffect(() => {
     const getData = async () => {
       try {
@@ -48,6 +57,8 @@ function SingleNote() {
         setFooter(resp.data[0].attributes.Footer);
         setId(resp.data[0].id);
         setDate(formatTimestamp(resp.data[0].attributes.createdAt));
+        setLikeIds(resp.data[0].attributes.likes.data.map((item) => { return item.id}));
+        setCommentIds(resp.data[0].attributes.comments.data.map((item) => { return item.id}));
         setLoader(false);
         if(resp.data.length === 0){
           navigate('/');
@@ -73,6 +84,7 @@ function SingleNote() {
             <p className="text-[#BF7B67] ">{title}</p>
           </BreadcrumbItem>
         </Breadcrumbs>
+        <div className="flex items-center gap-2">
         <Button
           size="sm"
           className=" bg-[#FAE9DD] text-[#BF7B67]"
@@ -80,6 +92,14 @@ function SingleNote() {
         >
           Back to Notes
         </Button>
+        {userId && <Button
+          onClick={() => handleLogout()}
+          size="sm"
+          className=" bg-[#FAE9DD] text-[#BF7B67]"
+        >
+          Logout
+        </Button>}
+        </div>
       </div>
       <div
         className={`px-8 py-8 w-full h-full ${
@@ -102,6 +122,7 @@ function SingleNote() {
           ></div>
           </>}
         </div>
+        {!loader && <Comment likeIds={likeIds} commentIds={commentIds} id={id}/>}
       </div>
     </div>
   );

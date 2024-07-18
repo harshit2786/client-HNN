@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getOneTypeBlog } from "../../controllers/strapiController";
-import { Chip, Divider, Input, Pagination, Spinner } from "@nextui-org/react";
+import { Button, Chip, Divider, Input, Pagination, Spinner } from "@nextui-org/react";
 import { useMobileLayout } from "../../hooks/mobilelayout";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,14 @@ function Others() {
   const navigate = useNavigate();
   const perPage = 10;
   const [page,setPage] = useState(1);
-  const [table,setTable] = useState([])
+  const [table,setTable] = useState([]);
+  const userId = sessionStorage.getItem("userData")
+    ? JSON.parse(sessionStorage.getItem("userData"))
+    : null;
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    navigate("/");
+  };
   useEffect(() => {
     const fetchNotes = async () => {
       try {
@@ -50,6 +57,8 @@ function Others() {
     <div className="h-full flex items-center flex-col w-full">
       <div className="w-full px-8 pt-8 border-[#BF7B67] flex justify-between sticky border-b  h-20">
         <div className="text-[#e7946f] text-2xl">Others</div>
+        <div className="flex gap-2 items-center">
+        
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -65,6 +74,14 @@ function Others() {
           radius="full"
           className="w-32 text-xs"
         />
+        {userId && <Button
+          onClick={() => handleLogout()}
+          size="sm"
+          className=" bg-[#FAE9DD] text-[#BF7B67]"
+        >
+          Logout
+        </Button>}
+        </div>
       </div>
       <div
         className={`px-8 py-8 w-full h-full ${

@@ -1,5 +1,13 @@
 export const CreateData = async (MetricName, newData) => {
-  
+  let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const payload = { data: newData };
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}`;
     const response = await fetch(URL, {
@@ -7,6 +15,7 @@ export const CreateData = async (MetricName, newData) => {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
       },
       body: JSON.stringify(payload),
       
@@ -126,13 +135,22 @@ export const CreateData = async (MetricName, newData) => {
   };
   
   export const DeleteSingleAttribute = async (MetricName, id) => {
+    let jwt;
+    if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+    }
+    else if (JSON.parse(sessionStorage.getItem("userData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+    } else {
+      jwt = "";
+    }
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/${id}`;
     const response = await fetch(URL, {
       method: "DELETE",
       mode: "cors",
       cache: "no-cache",
       headers: {
-        // Authorization: Bearer ${jwt}
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -151,7 +169,10 @@ export const CreateData = async (MetricName, newData) => {
   export const getFilteredByTwoRelation = async (MetricName,filterKey1,filterValue1,filterKey2,filterValue2) => {
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[${filterKey1}][id][$eq]=${filterValue1}&filters[${filterKey2}][id][$eq]=${filterValue2}`;
     let jwt;
-    if (JSON.parse(sessionStorage.getItem("userData"))) {
+    if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+    }
+    else if (JSON.parse(sessionStorage.getItem("userData"))) {
       jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
     } else {
       jwt = "";
@@ -179,7 +200,10 @@ export const CreateData = async (MetricName, newData) => {
   export const getFilteredByOneRelation = async (MetricName,filterKey1,filterValue1) => {
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[${filterKey1}][id][$eq]=${filterValue1}`;
     let jwt;
-    if (JSON.parse(sessionStorage.getItem("userData"))) {
+    if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+      jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+    }
+    else if (JSON.parse(sessionStorage.getItem("userData"))) {
       jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
     } else {
       jwt = "";
