@@ -21,6 +21,9 @@ export const NavigateSign = async (email, password) => {
     if(emailExists){
         if(password === CryptoJS.AES.decrypt(isEmailExist[0].Password2, `${process.env.REACT_APP_SECRET_KEY}`).toString(CryptoJS.enc.Utf8)){
             const login = await LoginUserGrabJwt(email);
+            if(sessionStorage.getItem("userData")){
+                sessionStorage.removeItem("userData");
+            }
             sessionStorage.setItem("KadduData", JSON.stringify(login));
             return true;
         }

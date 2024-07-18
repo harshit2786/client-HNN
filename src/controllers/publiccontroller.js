@@ -15,6 +15,9 @@ export const LoginLogic = async (email,password) => {
     if (isEmailExist.length !== 0) {
         if(password === CryptoJS.AES.decrypt(isEmailExist[0].Password2, `${process.env.REACT_APP_SECRET_KEY_PUBLIC}`).toString(CryptoJS.enc.Utf8)){
             const login = await LoginUserGrabJwt(email);
+            if(sessionStorage.getItem("KadduData")){
+                sessionStorage.removeItem("KadduData");
+            }
             sessionStorage.setItem("userData", JSON.stringify(login));
             return "Success";
         }
@@ -66,6 +69,9 @@ export const SignUpLogic = async(email,password,name) => {
         const Signin = await RegisterUserGrabJwt(email, password,name);
         console.log(Signin);
         const login = await LoginUserGrabJwt(email);
+        if(sessionStorage.getItem("KadduData")){
+            sessionStorage.removeItem("KadduData");
+        }
         sessionStorage.setItem("userData", JSON.stringify(login));
         return "Success";
     }
@@ -142,11 +148,17 @@ export const NavigateSign = async (email, password2) => {
             // await UpdateOneUserData("users",Signin.user.id,roles);
         }
         const login = await LoginUserGrabJwt(email, password);
+        if(sessionStorage.getItem("KadduData")){
+            sessionStorage.removeItem("KadduData");
+        }
         sessionStorage.setItem("userData", JSON.stringify(login));
         
     }
     else {
         const login = await LoginUserGrabJwt(email, password);
+        if(sessionStorage.getItem("KadduData")){
+            sessionStorage.removeItem("KadduData");
+        }
         sessionStorage.setItem("userData", JSON.stringify(login));
         navigate_route = isEmailExist[0].OrgRoute === null ? "/onboarding" : `${isEmailExist[0].OrgRoute}`;
     }
