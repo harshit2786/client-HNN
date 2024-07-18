@@ -46,7 +46,7 @@ function SingleOther() {
     : null;
   const handleLogout = () => {
     sessionStorage.removeItem("userData");
-    navigate("/");
+    window.location.reload();
   };
 
   useEffect(() => {

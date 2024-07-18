@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getOneTypeBlog } from "../../controllers/strapiController";
-import { Button, Chip, Divider, Input, Pagination, Spinner } from "@nextui-org/react";
+import { Button, Input, Pagination, Spinner } from "@nextui-org/react";
 import { useMobileLayout } from "../../hooks/mobilelayout";
-import { useNavigate } from "react-router-dom";
 
 function Quotes() {
-  const navigate = useNavigate();
   const [stories, setStories] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStories, setFilterStories] = useState([]);
@@ -19,7 +17,7 @@ function Quotes() {
     : null;
   const handleLogout = () => {
     sessionStorage.removeItem("userData");
-    navigate("/");
+    window.location.reload();
   };
   useEffect(() => {
     const fetchNotes = async () => {

@@ -19,7 +19,7 @@ function Notes() {
     : null;
   const handleLogout = () => {
     sessionStorage.removeItem("userData");
-    navigate("/");
+    window.location.reload();
   };
   useEffect(() => {
     const fetchNotes = async () => {

@@ -46,7 +46,7 @@ function SingleEssay() {
   }
   const handleLogout = () => {
     sessionStorage.removeItem("userData");
-    navigate("/");
+    window.location.reload();
   };
   useEffect(() => {
     const getData = async () => {
