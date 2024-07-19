@@ -20,7 +20,7 @@ function Editor() {
     },
     {
       className: "memoir",
-      iconSrc: "https://cdn.lordicon.com/ofwxettw.json",
+      iconSrc: "https://cdn.lordicon.com/icifqncn.json",
       text: "Memoir",
       path: "/editor/memoirs",
     },
@@ -28,19 +28,19 @@ function Editor() {
   const Nav2 = [
     {
       className: "notes",
-      iconSrc: "https://cdn.lordicon.com/chkplqja.json",
+      iconSrc: "https://cdn.lordicon.com/qhsqomjd.json",
       text: "Notes",
       path: "/editor/notes",
     },
     {
       className: "quotes",
-      iconSrc: "https://cdn.lordicon.com/kxugsilq.json",
+      iconSrc: "https://cdn.lordicon.com/ieoqzwng.json",
       text: "Quotes",
       path: "/editor/quotes",
     },
     {
       className: "others",
-      iconSrc: "https://cdn.lordicon.com/olvznswf.json",
+      iconSrc: "https://cdn.lordicon.com/ofwxettw.json",
       text: "Others",
       path: "/editor/others",
     },

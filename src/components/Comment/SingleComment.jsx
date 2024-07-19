@@ -11,12 +11,14 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Spinner,
 } from "@nextui-org/react";
 import Replies from "../Replies/Replies";
 
 function SingleComment({ comment, setIsOpen}) {
   const [user, setUser] = useState(null);
   const [log,setLog] = useState(null);
+  const [loader,setLoader] = useState(false);
   const userId = sessionStorage.getItem("userData")
     ? JSON.parse(sessionStorage.getItem("userData"))
     : null;
@@ -65,14 +67,17 @@ function SingleComment({ comment, setIsOpen}) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoader(true);
         const resp = await getOneData(
           "users",
           comment.data.attributes.user.data.id
         );
         console.log("Successfully fetched", resp);
         setUser(resp);
+        setLoader(false);
       } catch (error) {
         console.log("Error", error);
+        setLoader(false);
       }
     };
     if (comment) {
@@ -94,6 +99,7 @@ function SingleComment({ comment, setIsOpen}) {
     }
   },[userId?.user?.id])
   return (
+    <> {loader ? <Spinner color="warning"/> :
     <div className="w-full gap-4 flex flex-col">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -163,7 +169,8 @@ function SingleComment({ comment, setIsOpen}) {
         />
       </div>
       <Divider className="bg-[#BF7B67] my-2" />
-    </div>
+    </div>}
+    </>
   );
 }
 

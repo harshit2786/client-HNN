@@ -12,15 +12,19 @@ import {
   Input,
   Card,
   CardBody,
+  Spinner,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useMobileLayout } from "../../hooks/mobilelayout";
 import { CreateData, getFilteredByTwoRelation, getOneData } from "../../controllers/strapiController";
 import { LoginLogic, SignUpLogic } from "../../controllers/publiccontroller";
 import SingleComment from "./SingleComment";
+import './modal.css'
 
 function Comment({ likeIds, commentIds, id }) {
+  const [numLikes,setNumLikes] = useState(likeIds?.length);
   const [comments, setComments] = useState([]);
+  const [sortedComments,setSortedComments] = useState([]);
   const [userLike, setUserLike] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPass, setLoginPass] = useState("");
@@ -32,6 +36,7 @@ function Comment({ likeIds, commentIds, id }) {
   const [error, setError] = useState("");
   const [signError, setSignError] = useState("");
   const [com, setCom] = useState("");
+  const [loader,setLoader] = useState(false);
   const userId = sessionStorage.getItem("userData")
     ? JSON.parse(sessionStorage.getItem("userData"))
     : null;
@@ -131,8 +136,10 @@ function Comment({ likeIds, commentIds, id }) {
         },
             }
             try{
+              setNumLikes(numLikes+1);
+              setUserLike(true);
                 const resp = CreateData("likes",formData);
-                setUserLike(true);
+                
                 console.log("Success Like",resp);
             }
             catch(error){
@@ -181,20 +188,33 @@ function Comment({ likeIds, commentIds, id }) {
   useEffect(() => {
     const getComments = async () => {
       try {
+        setLoader(true);
         const promises = commentIds.map((item) =>
           getOneData("comments", Number(item))
         );
         const result = await Promise.all(promises);
         console.log("comments--->", result);
         setComments(result);
+        setLoader(false)
       } catch (error) {
         console.log("Error", error);
+        setLoader(false);
       }
     };
     if (commentIds.length > 0) {
       getComments();
     }
   }, [commentIds]);
+  useEffect(() => {
+    if(comments.length>0){
+      let arr = [];
+      arr = comments.sort(
+        (a, b) =>
+          new Date(b.data.attributes.createdAt) - new Date(a.data.attributes.createdAt)
+      );
+      setSortedComments(arr);
+    }
+  },[comments])
   useEffect(() => {
     const checkLike= async() => {
         try{
@@ -217,7 +237,7 @@ function Comment({ likeIds, commentIds, id }) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
-        <ModalContent className="pt-8">
+        <ModalContent className="pt-8 poppins-thin">
           <ModalHeader className="w-full flex flex-col gap-4 items-center justify-center">
             <div className="flex flex-col w-full">
               <Tabs fullWidth size="sm" aria-label="Tabs form">
@@ -355,8 +375,7 @@ function Comment({ likeIds, commentIds, id }) {
               }
             />
           </svg>
-
-          <p className=" text-sm font-light">{likeIds.length} likes!</p>
+          <p className=" text-sm font-light">{numLikes && numLikes} likes!</p>
         </div>
         <div className="flex text-sm"> {commentIds.length} comments!</div>
       </div>
@@ -366,7 +385,7 @@ function Comment({ likeIds, commentIds, id }) {
           isMobile ? "" : "px-8"
         }  items-center gap-2`}
       >
-        {comments.map((item, index) => (
+        {loader ? <Spinner color="warning"/> :  sortedComments.map((item, index) => (
           <SingleComment setIsOpen={setIsOpen} key={index} comment={item} />
         ))}
       </div>

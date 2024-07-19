@@ -6,6 +6,8 @@ import { CreateData, getOneData } from "../../controllers/strapiController";
 function Replies({ replyIds, setIsOpen, id ,log}) {
   const [toggle, setToggle] = useState(false);
   const [rep, setRep] = useState("");
+  const [loader,setLoader] = useState(false);
+  const [sortedReplies,setSortedReplies] = useState([]);
   const [replies, setReplies] = useState([]);
   const userId = sessionStorage.getItem("userData")
     ? JSON.parse(sessionStorage.getItem("userData"))
@@ -53,19 +55,32 @@ function Replies({ replyIds, setIsOpen, id ,log}) {
   useEffect(() => {
     const fetchreplies = async() => {
         try{
+            setLoader(true);
             const promises = replyIds.map((item) => getOneData("replies", Number(item.id)))
             const results = await Promise.all(promises);
             console.log("replieeeeee",results);
             setReplies(results);
+            setLoader(false);
         }
         catch(error){
             console.log("Error:",error);
+            setLoader(false);
         }
     }
     if (replyIds.length > 0) {
         fetchreplies();
     }
   }, [replyIds]);
+  useEffect(() => {
+    if(replies.length>0){
+      let arr = [];
+      arr = replies.sort(
+        (a, b) =>
+          new Date(b.data.attributes.createdAt) - new Date(a.data.attributes.createdAt)
+      );
+      setSortedReplies(arr);
+    }
+  },[replies])
   useEffect(() => {
     setRep("");
   }, [toggle]);
@@ -95,7 +110,7 @@ function Replies({ replyIds, setIsOpen, id ,log}) {
             </Button>
           </div>
           </div>
-          {replies.map((item) => (
+          {sortedReplies.map((item) => (
             <SingleReply log={log} reply={item}/>
           ))}
           <p

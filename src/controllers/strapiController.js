@@ -34,12 +34,22 @@ export const CreateData = async (MetricName, newData) => {
   };
   // UPDATE an entry in a collection
   export const UpdateData = async (MetricName, id, newData) => {
+    let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const payload = { data: newData };
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/${id}`;
     const response = await fetch(URL, {
       method: "PUT",
       mode: "cors",
       headers: {
+        Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
@@ -51,11 +61,21 @@ export const CreateData = async (MetricName, newData) => {
   };
   // Get a particular entry in a collection
   export const getOneData = async (MetricName, id) => {
+    let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/${id}/?populate=*`;
     const response = await fetch(URL, {
       method: "GET",
       mode: "cors",
       headers: {
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -71,12 +91,21 @@ export const CreateData = async (MetricName, newData) => {
     return data;
   };
   export const getAllData = async (MetricName) => {
+    let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*`;
     const response = await fetch(URL, {
       method: "GET",
       mode: "cors",
       headers: {
-        // Authorization: Bearer ${jwt}
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -92,12 +121,22 @@ export const CreateData = async (MetricName, newData) => {
     return data;
   };
   export const getOneTypeBlog = async (MetricName, filter) => {
+    let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[Type][$eq]=${filter}`;
     const response = await fetch(URL, {
       method: "GET",
       mode: "cors",
       cache:"no-cache",
       headers: {
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -113,12 +152,22 @@ export const CreateData = async (MetricName, newData) => {
     return data;
   };
   export const getOneBlog = async (MetricName, filter1,filter2) => {
+    let jwt;
+  if (JSON.parse(sessionStorage.getItem("KadduData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("KadduData")).jwt;
+  }
+  else if (JSON.parse(sessionStorage.getItem("userData"))) {
+    jwt = JSON.parse(sessionStorage.getItem("userData")).jwt;
+  } else {
+    jwt = "";
+  }
     const URL = `${process.env.REACT_APP_STRAPI_IP_ADDRESS}/api/${MetricName}/?populate=*&filters[Type][$eq]=${filter1}&filters[Path][$eq]=${filter2}`;
     const response = await fetch(URL, {
       method: "GET",
       mode: "cors",
       cache:"no-cache",
       headers: {
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -181,7 +230,7 @@ export const CreateData = async (MetricName, newData) => {
       method: "GET",
       mode: "cors",
       headers: {
-        // Authorization: Bearer ${jwt}
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -212,7 +261,7 @@ export const CreateData = async (MetricName, newData) => {
       method: "GET",
       mode: "cors",
       headers: {
-        // Authorization: Bearer ${jwt}
+        Authorization: `Bearer ${jwt}`
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",

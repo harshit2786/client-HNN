@@ -31,7 +31,7 @@ const Homepage = () => {
     },
     {
       className: "memoir",
-      iconSrc: "https://cdn.lordicon.com/ofwxettw.json",
+      iconSrc: "https://cdn.lordicon.com/icifqncn.json",
       text: "Memoir",
       path:"/memoirs"
     },
@@ -39,19 +39,19 @@ const Homepage = () => {
   const Nav2 = [
     {
       className: "notes",
-      iconSrc: "https://cdn.lordicon.com/chkplqja.json",
+      iconSrc: "https://cdn.lordicon.com/qhsqomjd.json",
       text: "Notes",
       path:"/notes"
     },
     {
       className: "quotes",
-      iconSrc: "https://cdn.lordicon.com/kxugsilq.json",
+      iconSrc: "https://cdn.lordicon.com/ieoqzwng.json",
       text: "Quotes",
       path:"/quotes"
     },
     {
       className: "others",
-      iconSrc: "https://cdn.lordicon.com/olvznswf.json",
+      iconSrc: "https://cdn.lordicon.com/ofwxettw.json",
       text: "Others",
       path:"/others"
     },
